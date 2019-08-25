@@ -19,7 +19,7 @@ BulletManager instantiates the approporiate number of bullets that may be active
 LevelManager instantiates the least enemy GameObjects required on the level. LevelManager iterates through the waves of the level to determine how many of each enenmy type needs to be instantiated and saved to the pool. On start of each wave, approporiate GameObject instances are pulled from the pool and activated.
 
 # BehaviourHandler and Behaviours
-BehaviourHandler is a simple FSM to handle Boss behaviour.
+BehaviourHandler is a simple FSM to handle Boss behaviour. BehaviourHandler handles transition between Behaviours. BehaviourHandler also includes a AI parameters dictionary and a cooldown manager.
 
 # To Do
 - Make BehaviourHandler data driven
