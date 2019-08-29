@@ -22,6 +22,12 @@ LevelManager instantiates the least enemy GameObjects required on the level. Lev
 BehaviourHandler is a simple FSM to handle Boss behaviour. BehaviourHandler handles transition between Behaviours. BehaviourHandler also includes a AI parameters dictionary and a cooldown manager.
 
 # To Do
+- Implement WaveEditor scene
+  - Game designers should be able to freely add and edit columns and enemies visually (WYSIWYG)
+  - Allow enemies to be placed freely in the column (not just straight vertical columns)!
+  - Change LevelManager implementation to process the new WaveData format
+- Port BehaviourHandler into a behaviour tree
+  - Port WaveController into a behaviour tree
 - Make BehaviourHandler data driven
 - Add sounds/effects
 - Multiple scenes and transitions
