@@ -6,8 +6,13 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private float speed;
 	[SerializeField] private float fireCooldown;
 
+	private bool canPlay = true;
+
 	private void Update()
 	{
+		if (!canPlay)
+			return;
+
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			Fire();
@@ -32,5 +37,10 @@ public class PlayerController : MonoBehaviour
 
 		await Task.Delay(System.TimeSpan.FromSeconds(fireCooldown));
 		cooldown = false;
+	}
+
+	public void OnLose()
+	{
+		canPlay = false;
 	}
 }

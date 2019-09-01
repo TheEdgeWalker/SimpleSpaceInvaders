@@ -32,17 +32,17 @@ public class LevelManager : MonoBehaviour
 		foreach (WaveData wave in levelData.Waves)
 		{
 			Dictionary<GameObject, int> waveEnemies = new Dictionary<GameObject, int>();
-			foreach (ColumnData column in wave.Columns)
+			foreach (ColumnData column in wave.columns)
 			{
-				foreach (GameObject prefab in column.enemies)
+				foreach (EnemyData enemyData in column.enemies)
 				{
-					if (waveEnemies.ContainsKey(prefab))
+					if (waveEnemies.ContainsKey(enemyData.prefab))
 					{
-						waveEnemies[prefab]++;
+						waveEnemies[enemyData.prefab]++;
 					}
 					else
 					{
-						waveEnemies[prefab] = 1;
+						waveEnemies[enemyData.prefab] = 1;
 					}
 				}
 			}
@@ -98,26 +98,20 @@ public class LevelManager : MonoBehaviour
 	{
 		WaveData waveData = levelData.Waves[index];
 
-		List<Column> columns = new List<Column>(waveData.Columns.Length);
+		List<Column> columns = new List<Column>(waveData.columns.Length);
 
-		float x = 0f;
-		foreach (ColumnData columnData in waveData.Columns)
+		foreach (ColumnData columnData in waveData.columns)
 		{
-			float y = 0f;
 			Column column = new Column(columnData);
 
-			foreach (GameObject prefab in columnData.enemies)
+			foreach (EnemyData enemyData in columnData.enemies)
 			{
-				GameObject enemy = GetFromEnemyPool(prefab);
-				enemy.transform.localPosition = new Vector3(x, y);
+				GameObject enemy = GetFromEnemyPool(enemyData.prefab);
+				enemy.transform.localPosition = enemyData.position;
 				enemy.SetActive(true);
 
 				column.AddEnemy(enemy);
-
-				y -= waveData.Spacing.y;
 			}
-
-			x += waveData.Spacing.x;
 
 			columns.Add(column);
 		}

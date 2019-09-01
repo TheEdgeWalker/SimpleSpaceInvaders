@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ee5a84b777d20134bab417f46e60f714, type: 3}
-  m_Name: Wave2
+  m_Name: Wave3
   m_EditorClassIdentifier: 
-  spacing: {x: 0, y: 0}
   columns:
   - enemies:
-    - {fileID: 6737177911572841394, guid: cfcc2d350258b0343829748b9f6d1b20, type: 3}
+    - prefab: {fileID: 6737177911572841394, guid: cfcc2d350258b0343829748b9f6d1b20,
+        type: 3}
+      position: {x: 0, y: 0}
   speed: 0
   fireCooldown: 0
-  startingPosition: {x: 0, y: 2}
+  startingPosition: {x: 0, y: 3}

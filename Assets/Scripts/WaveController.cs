@@ -14,7 +14,7 @@ public class WaveController : MonoBehaviour
 	{
 		currentWave = wave;
 
-		transform.position = wave.WaveData.StartingPosition;
+		transform.position = wave.WaveData.startingPosition;
 	}
 
 	public void StopWave()
@@ -29,13 +29,13 @@ public class WaveController : MonoBehaviour
 
 		if (down > 0f)
 		{
-			float y = Mathf.Min(currentWave.WaveData.Speed * Time.deltaTime, down);
+			float y = Mathf.Min(currentWave.WaveData.speed * Time.deltaTime, down);
 			transform.position += new Vector3(0, -y);
 			down -= y;
 		}
 		else
 		{
-			float x = currentWave.WaveData.Speed * direction * Time.deltaTime;
+			float x = currentWave.WaveData.speed * direction * Time.deltaTime;
 			transform.position += new Vector3(x, 0);
 		}
 
@@ -45,7 +45,7 @@ public class WaveController : MonoBehaviour
 	private bool cooldown = false;
 	private async void Fire()
 	{
-		if (cooldown || currentWave.WaveData.FireCooldown == 0f)
+		if (cooldown || currentWave.WaveData.fireCooldown == 0f)
 			return;
 
 		Vector3? position = currentWave.GetFirePosition();
@@ -56,7 +56,7 @@ public class WaveController : MonoBehaviour
 
 		cooldown = true;
 
-		await Task.Delay(System.TimeSpan.FromSeconds(currentWave.WaveData.FireCooldown));
+		await Task.Delay(System.TimeSpan.FromSeconds(currentWave.WaveData.fireCooldown));
 		cooldown = false;
 	}
 
