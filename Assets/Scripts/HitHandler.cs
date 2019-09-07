@@ -9,20 +9,25 @@ public class HitHandler : MonoBehaviour
 
 	private HitPoints hp;
 
+	public void OnInitWave()
+	{
+		hp.Reset();
+	}
+
 	private void Awake()
 	{
 		hp = new HitPoints(defaultHP);
 
 		if (healthBar != null)
-			healthBar.Init(defaultHP);
+		{
+			healthBar.Init();
+			hp.SubscribeOnChanged(healthBar.SetCurrent);
+		}
 	}
 
 	private void OnHit(int damage)
 	{
 		hp.Damage(damage);
-
-		if (healthBar != null)
-			healthBar.SetCurrent(hp.CurrentValue);
 
 		if (!hp.IsAlive())
 		{

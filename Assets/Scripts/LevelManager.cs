@@ -109,6 +109,7 @@ public class LevelManager : MonoBehaviour
 				GameObject enemy = GetFromEnemyPool(enemyData.prefab);
 				enemy.transform.localPosition = enemyData.position;
 				enemy.SetActive(true);
+				enemy.SendMessage("OnInitWave", SendMessageOptions.DontRequireReceiver);
 
 				column.AddEnemy(enemy);
 			}

@@ -6,15 +6,12 @@ public class HealthBar : MonoBehaviour
 	[SerializeField] private Image imageBackground;
 	[SerializeField] private Image imageForeground;
 
-	int defaultHP = 0;
-
-	public void Init(int defaultHP)
+	public void Init()
 	{
 		imageForeground.rectTransform.offsetMax = new Vector2(0f, 0f);
-		this.defaultHP = defaultHP;
 	}
 
-	public void SetCurrent(int currentHP)
+	public void SetCurrent(int defaultHP, int currentHP)
 	{
 		float diff = defaultHP - currentHP;
 		float offset = diff / (float)defaultHP * imageBackground.rectTransform.sizeDelta.x;
