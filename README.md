@@ -42,4 +42,4 @@ BehaviourHandler is a simple FSM to handle Boss behaviour. BehaviourHandler hand
 - Make BehaviourHandler data driven
 - Add sounds/effects
 - Multiple scenes and transitions
-- Implement circular queue for GameObject pools
+- ~~Implement circular queue for GameObject pools~~
