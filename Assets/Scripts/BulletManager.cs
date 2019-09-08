@@ -13,7 +13,7 @@ public class BulletManager : MonoBehaviour
 {
 	[SerializeField] private BulletData[] datas;
 
-	private Dictionary<string, GameObject[]> bullets = new Dictionary<string, GameObject[]>();
+	private Dictionary<string, GameObjectPool> bullets = new Dictionary<string, GameObjectPool>();
 
 	public static BulletManager Instance { get; private set; }
 
@@ -24,14 +24,7 @@ public class BulletManager : MonoBehaviour
 
 		foreach (BulletData data in datas)
 		{
-			bullets[data.prefab.name] = new GameObject[data.cacheCount];
-
-			for (int i = 0; i < data.cacheCount; ++i)
-			{
-				GameObject bullet = Instantiate(data.prefab.gameObject, transform);
-				bullet.SetActive(false);
-				bullets[data.prefab.name][i] = bullet;
-			}
+			bullets[data.prefab.name] = new GameObjectPool(data.prefab.gameObject, data.cacheCount, transform);
 		}
 
 		Instance = this;
@@ -39,21 +32,15 @@ public class BulletManager : MonoBehaviour
 
 	public void Fire(string name, Vector3 origin, float angle)
 	{
-		GameObject[] pool;
+		GameObjectPool pool;
 		if (bullets.TryGetValue(name, out pool))
 		{
-			foreach (GameObject bullet in pool)
+			GameObject bullet = pool.GetAvailable();
+			if (bullet != null)
 			{
-				if (!bullet.activeInHierarchy)
-				{
-					bullet.transform.position = origin;
-					bullet.transform.rotation = Quaternion.Euler(0f, 0f, angle);
-					bullet.SetActive(true);
-					return;
-				}
+				bullet.transform.position = origin;
+				bullet.transform.rotation = Quaternion.Euler(0f, 0f, angle);
 			}
-
-			Debug.LogWarning("No available bullets: " + name);
 		}
 		else
 		{

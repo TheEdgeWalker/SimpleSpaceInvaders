@@ -11,7 +11,7 @@ public class LevelManager : MonoBehaviour
 	[SerializeField] private UnityEvent onLose;
 	[SerializeField] private UnityEvent onEnemyDied;
 
-	private Dictionary<GameObject, GameObject[]> enemyPool = new Dictionary<GameObject, GameObject[]>();
+	private Dictionary<GameObject, GameObjectPool> enemyPool = new Dictionary<GameObject, GameObjectPool>();
 
 	private int currenWaveIndex = 0;
 	private Wave currentWave;
@@ -65,30 +65,16 @@ public class LevelManager : MonoBehaviour
 
 		foreach (var prefabCount in totalEnemies)
 		{
-			enemyPool[prefabCount.Key] = new GameObject[prefabCount.Value];
-
-			for (int i = 0; i < prefabCount.Value; ++i)
-			{
-				GameObject go = Instantiate(prefabCount.Key, transform);
-				go.SetActive(false);
-
-				enemyPool[prefabCount.Key][i] = go;
-			}
+			enemyPool[prefabCount.Key] = new GameObjectPool(prefabCount.Key, prefabCount.Value, transform);
 		}
 	}
 
 	private GameObject GetFromEnemyPool(GameObject prefab)
 	{
-		GameObject[] pool;
+		GameObjectPool pool;
 		if (enemyPool.TryGetValue(prefab, out pool))
 		{
-			foreach (GameObject instance in pool)
-			{
-				if (!instance.activeInHierarchy)
-				{
-					return instance;
-				}
-			}
+			return pool.GetAvailable();
 		}
 
 		return null;
@@ -107,11 +93,18 @@ public class LevelManager : MonoBehaviour
 			foreach (EnemyData enemyData in columnData.enemies)
 			{
 				GameObject enemy = GetFromEnemyPool(enemyData.prefab);
-				enemy.transform.localPosition = enemyData.position;
-				enemy.SetActive(true);
-				enemy.SendMessage("OnInitWave", SendMessageOptions.DontRequireReceiver);
+				if (enemy != null)
+				{
+					enemy.transform.localPosition = enemyData.position;
+					enemy.SetActive(true);
+					enemy.SendMessage("OnInitWave", SendMessageOptions.DontRequireReceiver);
 
-				column.AddEnemy(enemy);
+					column.AddEnemy(enemy);
+				}
+				else
+				{
+					Debug.LogWarning("Enemy not available: " + enemyData.prefab.name);
+				}
 			}
 
 			columns.Add(column);
